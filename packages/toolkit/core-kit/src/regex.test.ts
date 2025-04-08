@@ -24,4 +24,22 @@ describe('Regular expressions should work as expected', () => {
     expect(domainRegEx.test('-auth.bar.com')).toBe(false);
     expect(domainRegEx.test('auth.bar-foo.com')).toBe(true);
   });
+
+  it('should allow domains where the first part is a wildcard. e.g. *.bar.com', () => {
+    expect(domainRegEx.test('*.bar.com')).toBe(true);
+  });
+
+  it('should allow domains where the first part ends with a wildcard. e.g. foo-*.bar.com', () => {
+    expect(domainRegEx.test('foo-*.bar.com')).toBe(true);
+  });
+
+  it('should not allow a wildcard in the middle of the first part. e.g. f*o.bar.com', () => {
+    expect(domainRegEx.test('f*o.bar.com')).toBe(false);
+    expect(domainRegEx.test('m*re-th*n-*ne.bar.com')).toBe(false);
+  });
+
+  it('should not allow wildcards outside the first part of the domain. e.g. foo.*.com', () => {
+    expect(domainRegEx.test('foo.*.com')).toBe(false);
+    expect(domainRegEx.test('foo.bar.*')).toBe(false);
+  });
 });
