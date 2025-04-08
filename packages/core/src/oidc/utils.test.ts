@@ -128,6 +128,18 @@ describe('isOriginAllowed', () => {
       )
     ).toBeTruthy();
   });
+
+  it('should return true if the origin matches a wildcard in the list of redirectUris', () => {
+    expect(
+      isOriginAllowed(
+        'https://test-wildcard.logto.dev',
+        {
+          [CustomClientMetadataKey.CorsAllowedOrigins]: [],
+        },
+        ['https://test-*.logto.dev/callback']
+      )
+    ).toBeTruthy();
+  });
 });
 
 describe('buildLoginPromptUrl', () => {

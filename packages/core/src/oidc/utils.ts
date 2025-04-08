@@ -77,9 +77,23 @@ export const isOriginAllowed = (
 ) => {
   const redirectUriOrigins = redirectUris.map((uri) => new URL(uri).origin);
 
-  return [...corsAllowedOrigins, ...redirectUriOrigins].includes(origin);
+  return [...corsAllowedOrigins, ...redirectUriOrigins].some((candidate) => {
+    if (candidate.includes('*')) {
+      return matchWildcard(candidate, origin);
+    }
+
+    return candidate === origin;
+  });
 };
 
+const matchWildcard = (pattern: string, subject: string): boolean => {
+  const index = pattern.indexOf('*');
+
+  return (
+    subject.startsWith(pattern.slice(0, Math.max(0, index))) &&
+    subject.endsWith(pattern.slice(Math.max(0, index + 1)))
+  );
+};
 export const getUtcStartOfTheDay = (date: Date) => {
   return new Date(
     Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), 0, 0, 0, 0)
