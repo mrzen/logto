@@ -2,7 +2,7 @@ import { mobileUriSchemeProtocolRegEx, webRedirectUriProtocolRegEx } from '../re
 
 export const validateRedirectUrl = (url: string, type: 'web' | 'mobile') => {
   try {
-    const { protocol } = new URL(url);
+    const { protocol } = new URL(url.replaceAll('*', ''));
     const protocolRegEx =
       type === 'mobile' ? mobileUriSchemeProtocolRegEx : webRedirectUriProtocolRegEx;
 
