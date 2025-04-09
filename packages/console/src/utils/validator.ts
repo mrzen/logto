@@ -1,7 +1,7 @@
 export const uriValidator = (value: string) => {
   try {
     // eslint-disable-next-line no-new
-    new URL(value.replaceAll('*', ''));
+    new URL(value);
   } catch {
     return false;
   }
