@@ -1,8 +1,6 @@
-import type { CaptchaProvider } from '@logto/schemas';
 import { useEffect, useMemo, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
-import useSWR, { useSWRConfig } from 'swr';
 
 import Delete from '@/assets/icons/delete.svg?react';
 import File from '@/assets/icons/file.svg?react';
@@ -15,26 +13,21 @@ import PageMeta from '@/components/PageMeta';
 import ConfirmModal from '@/ds-components/ConfirmModal';
 import DynamicT from '@/ds-components/DynamicT';
 import TabNav, { TabNavItem } from '@/ds-components/TabNav';
-import type { RequestError } from '@/hooks/use-api';
 import useApi from '@/hooks/use-api';
 import useTenantPathname from '@/hooks/use-tenant-pathname';
-
-import CaptchaLogo from '../Security/CaptchaLogo';
-import CreateCaptchaForm from '../Security/CreateCaptchaForm';
-import { captchaProviders } from '../Security/CreateCaptchaForm/constants';
+import CaptchaLogo from '@/pages/Security/Captcha/CaptchaLogo';
+import CreateCaptchaForm from '@/pages/Security/Captcha/CreateCaptchaForm';
+import { captchaProviders } from '@/pages/Security/Captcha/CreateCaptchaForm/constants';
+import useDataFetch from '@/pages/Security/Captcha/use-data-fetch';
 
 import CaptchaContent from './CaptchaContent';
 import styles from './index.module.scss';
 
 function CaptchaDetails() {
-  const { mutate: mutateGlobal } = useSWRConfig();
   const [isDeleted, setIsDeleted] = useState(false);
   const [isReadMeOpen, setIsReadMeOpen] = useState(false);
   const { t } = useTranslation(undefined, { keyPrefix: 'admin_console' });
-  const { data, error, mutate, isLoading } = useSWR<CaptchaProvider, RequestError>(
-    `api/captcha-provider`
-  );
-
+  const { data, error, mutate, isLoading } = useDataFetch();
   const api = useApi();
   const { navigate } = useTenantPathname();
 
@@ -66,7 +59,7 @@ function CaptchaDetails() {
       setIsDeleted(true);
 
       toast.success(t('security.captcha_details.captcha_deleted'));
-      await mutateGlobal('api/captcha-provider');
+      await mutate(undefined);
 
       navigate('/security', {
         replace: true,

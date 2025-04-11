@@ -1,7 +1,36 @@
+const password_policy = {
+  password_requirements: '비밀번호 요구사항',
+  minimum_length: '최소 길이',
+  minimum_length_description: 'NIST는 <a>최소 8자리</a>를 권장합니다.',
+  minimum_length_error: '최소 길이는 {{min}} ~ {{max}}(포함) 사이여야 합니다.',
+  minimum_required_char_types: '최소 필요 문자 유형',
+  minimum_required_char_types_description:
+    '문자 유형: 대문자(A-Z), 소문자(a-z), 숫자(0-9), 특수 기호({{symbols}}).',
+  password_rejection: '비밀번호 거부',
+  compromised_passwords: '위험한 비밀번호',
+  breached_passwords: '유출된 비밀번호',
+  breached_passwords_description: '이전에 유출된 비밀번호를 거부합니다.',
+  restricted_phrases: '보안속에 좋지 않은 구구절',
+  restricted_phrases_tooltip:
+    '3글자 이상의 다른 글자와 함께 조합하지 않는 한 이러한 구문을 피하세요.',
+  repetitive_or_sequential_characters: '반복된 혹은 순차적인 문자',
+  repetitive_or_sequential_characters_description: '예: "AAAA", "1234", "abcd" 등.',
+  user_information: '사용자 정보',
+  user_information_description: '예: 이메일 주소, 전화 번호, 사용자 이름 등.',
+  custom_words: '사용자 정의 단어',
+  custom_words_description:
+    '컨텍스트에 따라 맞춤형 단어입니다. 대소문자를 구분하지 않으며, 한 줄에 하나씩 작성하세요.',
+  custom_words_placeholder: '서비스 이름, 회사 이름 등.',
+};
+
 const security = {
   page_title: '보안',
   title: '보안',
   subtitle: '정교한 공격에 대한 고급 보호를 구성합니다.',
+  tabs: {
+    captcha: 'CAPTCHA',
+    password_policy: '비밀번호 정책',
+  },
   bot_protection: {
     title: '봇 보호',
     description:
@@ -12,10 +41,9 @@ const security = {
       add: 'CAPTCHA 추가',
     },
     settings: '설정',
-    captcha_required_flows: 'CAPTCHA 필요 흐름',
-    sign_up: '회원가입',
-    sign_in: '로그인',
-    forgot_password: '비밀번호 찾기',
+    enable_captcha: 'CAPTCHA 활성화',
+    enable_captcha_description:
+      '회원가입, 로그인, 비밀번호 복구 흐름에 대해 CAPTCHA 검증을 활성화합니다.',
   },
   create_captcha: {
     setup_captcha: 'CAPTCHA 설정',
@@ -42,10 +70,13 @@ const security = {
     site_key: '사이트 키',
     secret_key: '비밀 키',
     project_id: '프로젝트 ID',
+    recaptcha_key_id: 'reCAPTCHA 키 ID',
+    recaptcha_api_key: '프로젝트의 API 키',
     deletion_description: '이 CAPTCHA 제공자를 삭제하시겠습니까?',
     captcha_deleted: 'CAPTCHA 제공자가 성공적으로 삭제되었습니다',
     setup_captcha: 'CAPTCHA 설정',
   },
+  password_policy,
 };
 
 export default Object.freeze(security);

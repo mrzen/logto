@@ -17,9 +17,11 @@ import { splitMarkdownByTitle } from '@/pages/Connectors/utils';
 import modalStyles from '@/scss/modal.module.scss';
 import { trySubmitSafe } from '@/utils/form';
 
+import { SecurityTabs } from '../../types';
 import CaptchaFormFields from '../CaptchaFormFields';
 import { captchaProviders } from '../CreateCaptchaForm/constants';
 import { type CaptchaFormType } from '../types';
+import useDataFetch from '../use-data-fetch';
 
 import styles from './index.module.scss';
 
@@ -33,6 +35,7 @@ function Guide({ type, onClose }: Props) {
   const { navigate } = useTenantPathname();
   const { t } = useTranslation(undefined, { keyPrefix: 'admin_console' });
   const api = useApi();
+  const { mutate } = useDataFetch();
 
   const methods = useForm<CaptchaFormType>({
     reValidateMode: 'onBlur',
@@ -55,7 +58,7 @@ function Guide({ type, onClose }: Props) {
         return;
       }
 
-      await api
+      const provider = await api
         .put('api/captcha-provider', {
           json: {
             config: {
@@ -66,8 +69,10 @@ function Guide({ type, onClose }: Props) {
         })
         .json<CaptchaProvider>();
 
+      await mutate(provider);
+
       toast.success(t('general.saved'));
-      navigate('/security/captcha');
+      navigate(`/security/${SecurityTabs.Captcha}/details`);
     })
   );
 
